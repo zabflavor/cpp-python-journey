@@ -1,10 +1,10 @@
 #include<iostream>
 using namespace std;
 int main() {
-	//赋值运算符
+	//赂鲁脰碌脭脣脣茫路没
 	//=
 	int a = 10;
-	a = 100;//(赋值把前面的a=10覆盖掉了)
+	a = 100;//(赂鲁脰碌掳脩脟掳脙忙碌脛a=10赂虏赂脟碌么脕脣)
 	cout << "a=" << a << endl;
 	//+=
 	a = 22;
