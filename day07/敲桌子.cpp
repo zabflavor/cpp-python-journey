@@ -1,10 +1,10 @@
-//·ê7¹ý
+//Â·Ãª7Â¹Ã½
 #include<iostream>
 using namespace std;
 int main() {
-	for (int i = 0; i <= 100; i++) { //  ||±íÊ¾»ò
+	for (int i = 0; i <= 100; i++) { //  ||Â±Ã­ÃŠÂ¾Â»Ã²
 		if (i % 7 == 0 || i % 10 == 7 || i / 10 == 7) {
-			cout << "ÇÃ×À×Ó" << endl;
+			cout << "Ã‡ÃƒÃ—Ã€Ã—Ã“" << endl;
 		}
 		else {
 			cout << i << endl;
