@@ -1,0 +1,113 @@
+# `<cmath>`、`<iomanip>`、`fixed`、`setprecision`、`sqrt` 详解
+## 一、`<cmath>` —— C++ 数学函数库
+`<cmath>` 继承自 C 语言的 `<math.h>`，提供各种数学函数。**只要涉及开方、幂、三角函数、取整等运算，就必须包含它。**
+### 常用函数一览
+| 函数 | 功能 | 示例 | 结果 |
+|---|---|---|---|
+| `sqrt(x)` | 开平方 √x | `sqrt(16.0)` | `4.0` |
+| `pow(x, y)` | x 的 y 次方 | `pow(2, 10)` | `1024` |
+| `fabs(x)` | 绝对值（浮点） | `fabs(-3.5)` | `3.5` |
+| `abs(x)` | 绝对值（整数，C++11 起也在 `<cstdlib>`） | `abs(-5)` | `5` |
+| `floor(x)` | 向下取整 | `floor(3.7)` | `3.0` |
+| `ceil(x)` | 向上取整 | `ceil(3.2)` | `4.0` |
+| `round(x)` | 四舍五入（C++11） | `round(3.5)` | `4.0` |
+| `log(x)` | 自然对数 ln x | `log(2.718...)` | `≈1` |
+| `log10(x)` | 以 10 为底的对数 | `log10(1000)` | `3.0` |
+| `sin/cos/tan` | 三角函数（弧度制） | `sin(3.14159)` | `≈0` |
+### ⚠️ 注意事项
+1. **参数和返回值都是 `double`**
+   ```cpp
+   sqrt(4);      // ⚠️ 能编译，4 会被隐式转成 4.0，结果 2.0 —— 但建议写 sqrt(4.0) 更清晰
+   sqrt(-1.0);   // ⚠️ 负数开方！返回 NaN（Not a Number），且 printf 输出会是 nan/-nan
+   ```
+2. **`pow` 有精度陷阱**：`pow` 底层用浮点计算，`pow(10, 2)` 可能得到 `99.9999...`，转 `int` 时截断成 99。**整数幂尽量自己写循环乘，整数平方不要用 `pow`**：
+   ```cpp
+   int sq = (int)pow(5.0, 2.0);   // ⚠️ 危险，可能得到 24
+   int sq = 5 * 5;                // ✅ 整数运算就这样写
+   ```
+3. **`fabs` vs `abs`**：C 语言里 `abs` 是整数绝对值（在 `<cstdlib>`），对 `double` 用 `abs` 在老编译器上会出错或隐式截断。浮点数一律用 `fabs` 最保险（C++11 后 `<cmath>` 重载了 `abs` 支持浮点，但混用容易乱）。
+## 二、`sqrt` 重点剖析（本题主角）
+```cpp
+double sqrt(double x);   // 原型：接收 double，返回 double
+- **功能**：返回 x 的算术平方根（非负）。
+- **本题用法**：
+  ```cpp
+  sqrt(p * (p - a) * (p - b) * (p - c))
+  //            ↑ 先整体算出括号里的乘积，再开平方
+  ```
+- **运算顺序**：`sqrt` 只对**紧跟着的一个整体表达式**开方，所以要把整个乘积写在一个括号里。写成 `sqrt(p) * (p-a) * ...` 就完全错了——那是对 p 单独开方。
+### ⚠️ 注意事项
+1. **不要对负数开方**。本题题目保证能构成三角形所以安全；但如果自己写更通用的程序，应先判断：
+   ```cpp
+   if (p * (p - a) * (p - b) * (p - c) >= 0)   // 先判合法性
+       cout << sqrt(...);
+2. **返回值是 double，直接参与 `%.1f` / `cout` 输出即可**，不需要强转。
+3. `sqrt(2)` 这类结果是**无理数的近似值**（约 1.41421356237），永远存在浮点误差，只是误差极小（double 约 15~16 位有效数字），输出 1 位小数时完全无感。
+## 三、`<iomanip>` —— 输出格式控制头文件
+`iomanip` = **io manipulators**（输入输出操纵器）。它本身不做输入输出，而是提供一堆“格式开关”，配合 `cout` 使用。
+| 操纵器 | 功能 | 示例 |
+|---|---|---|
+| `setprecision(n)` | 设置有效数字/小数位数（见下） | `setprecision(3)` |
+| `fixed` | 让 `setprecision` 变为“固定小数位数”模式 | 见下文 |
+| `setw(n)` | 设置字段宽度（右对齐补空格） | `setw(5) << 42` → `"   42"` |
+| `setfill(c)` | 配合 `setw` 的填充字符 | `setfill('0')` |
+| `setbase(n)` / `hex` / `oct` | 进制转换 | `hex << 255` → `ff` |
+| `left` / `right` | 对齐方向 | `left << setw(5) << 42` → `"42   "` |
+**最容易忘的一件事：用了 `setprecision`、`setw` 就必须 `#include <iomanip>`**，否则编译报错“未声明的标识符”。
+---
+## 四、`setprecision` —— 精度控制（重点+易错）
+这是新手最容易懵的点，因为它有**两种模式**：
+### 模式一：默认模式（不写 `fixed`）→ 控制的是“有效数字总位数”
+
+double x = 3.14159265;
+cout << setprecision(4) << x;      // 输出 3.142 —— 总共 4 位有效数字（3、1、4、1）
+double y = 123456.789;
+cout << setprecision(4) << y;      // 输出 1.235e+05 —— 位数不够自动变科学计数法！
+### 模式二：`fixed` 模式（写上 `fixed`）→ 控制的是“小数点后的位数” ✅
+
+double x = 3.14159265;
+cout << fixed << setprecision(2) << x;    // 输出 3.14 —— 小数点后固定 2 位
+double y = 123456.789;
+cout << fixed << setprecision(2) << y;    // 输出 123456.79 —— 整数部分完整保留
+**题目要求“精确到小数点后 1 位”，所以必须 `fixed << setprecision(1)`，少写 `fixed` 就错了。**
+### ⚠️ 注意事项
+1. **`setprecision` 是“粘性”的**——设置一次对后面所有输出都生效，不是只管下一个数据：
+   ```cpp
+   cout << fixed << setprecision(1) << 3.14159 << " " << 2.71828;
+   // 输出：3.1 2.7 —— 两个都是 1 位小数
+   ```
+   想中途改精度，再写一次 `setprecision(n)` 即可。
+2. **`fixed` 同样是粘性的**，会影响整个程序后续的浮点输出。如果后面想恢复默认模式：
+   ```cpp
+   cout << defaultfloat;   // C++11 起，取消 fixed 模式
+   ```
+3. **四舍五入是自动的**：`fixed << setprecision(1) << 6.06` 输出 `6.1`，与 `printf("%.1f")` 行为一致（按底层的舍入规则，一般就是四舍五入）。
+4. **`setprecision` 只影响浮点数，不影响整数**：`cout << fixed << setprecision(1) << 42` 输出仍是 `42`。
+5. **与 `printf` 的对照记忆**：
+   ```cpp
+   printf("%.1f\n", x);                          // C 风格
+   cout << fixed << setprecision(1) << x << "\n"; // C++ 风格，效果相同
+## 五、完整代码串起来（逐行回顾）
+```cpp
+#include <iostream>                 // cin、cout
+#include <iomanip>                  // fixed、setprecision（不 include 会编译错误！）
+#include <cmath>                    // sqrt
+using namespace std;                // 省略 std:: 前缀
+
+int main() {
+    double a, b, c;
+    cin >> a >> b >> c;                        // 读入三边
+    double p = (a + b + c) / 2;                // 半周长
+    cout << fixed << setprecision(1)           // 固定 1 位小数（等价于 %.1f）
+         << sqrt(p * (p - a) * (p - b) * (p - c)) << endl;   // 海伦公式开平方后输出
+    return 0;
+}
+## 六、避坑清单（速记）
+| 坑 | 正确做法 |
+|---|---|
+| 用了 `setprecision` 忘了 `#include <iomanip>` | 三个头文件 `iostream + iomanip + cmath` 一起写全 |
+| 只写 `setprecision(1)` 不写 `fixed` | 输出变成 1 位**有效数字**（6.05→6），必须加 `fixed` |
+| `sqrt(-x)` 输出 `nan` | 开方前确保非负（本题题目已保证） |
+| `pow` 算整数幂结果差 1 | 整数乘法手写，别用 `pow` |
+| 以为 `setprecision` 只管一次输出 | 它是永久设置，直到再次修改 |
+| `%.1f` 与 `fixed<<setprecision(1)` 混淆 | 两者等价，选一种风格统一用 |
