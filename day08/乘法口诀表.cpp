@@ -1,7 +1,7 @@
 #include<iostream>
 using namespace std;
 int main() {
-	//列数*行数=计算结果 列数小于等于当前行数
+	//鍒楁暟*琛屾暟=璁＄畻缁撴灉 鍒楁暟灏忎簬绛変簬褰撳墠琛屾暟
 	for (int i = 1; i <= 9; i++) {
 		//cout << i << endl;
 		for (int j = 1; j <= i; j++) {
