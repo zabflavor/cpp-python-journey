@@ -1,10 +1,10 @@
 #include<iostream>
 using namespace std;
 int main() {
-	//利用嵌套循环打印星图
+	//鍒╃敤宓屽寰幆鎵撳嵃鏄熷浘
 	for (int  a = 0; a < 10; a++)
 	{
-		//内层循环
+		//鍐呭眰寰幆
 		for (int i = 0; i < 10; i++) {
 			cout << "* ";
 		}
