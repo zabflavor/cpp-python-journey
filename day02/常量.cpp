@@ -12,7 +12,7 @@ int main() {
 
 	/*const修饰的变量*/
 	const int month = 12;
-	//month=24;//错误，connst修饰的变量也成为常量
+	//month=24;//错误，const修饰的变量也成为常量
 	cout << "一年总共有" << month << "个月份" << endl;
 
 
