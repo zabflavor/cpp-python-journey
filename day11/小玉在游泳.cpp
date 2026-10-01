@@ -1,11 +1,11 @@
 #include<iostream>
 using namespace std;
 int main() {
-	double mile = 0;//²»ÒªÓÃint »áÄ¨µôÐ¡Êý
+	double mile = 0;//ä¸è¦ç”¨int ä¼šæŠ¹æŽ‰å°æ•°
 	cin >> mile;
 	double sum = 0;
 	int i = 0;
-	for (double a = (double)2; sum < mile;) {//ÓÃdoubleÃüÃûa
+	for (double a = (double)2; sum < mile;) {//ç”¨doubleå‘½åa
 	    sum +=a;
 		a = a * 0.98;
 		i++;
