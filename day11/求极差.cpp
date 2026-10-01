@@ -8,8 +8,8 @@ int main(){
 	double minv = 1000;
 	for (int i = 0; i < n; i++) {
 		cin >> a[i];
-		if (a[i] > maxv)maxv = a[i];//求最大值
-		if (a[i] < minv)minv = a[i];//求最小值
+		if (a[i] > maxv)maxv = a[i];//脟贸脳卯麓贸脰碌
+		if (a[i] < minv)minv = a[i];//脟贸脳卯脨隆脰碌
 	}
 	cout<<(double)maxv-minv<<endl;
 
