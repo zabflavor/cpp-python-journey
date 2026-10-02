@@ -1,0 +1,40 @@
+  # Day 12 · 学习日志
+**日期**：2026-10-02（国庆）   **今日学习时长**：5h
+
+## 今日完成
+- [x] 洛谷 AC 1 题：求三角形
+- [x] Python 第 3 章完（列表）
+- [x] Python 第 4 章学到列表解析（求立方）部分
+
+## 今日刷题
+- [x] 求三角形（AC）
+
+## Python 第 3 章 · 列表（学完）
+- 定义：names = ["a", "b"]，用 []，元素可以是各种类型
+- 索引：names[0] 第一个，names[-1] 最后一个（负数从后往前数）
+- 修改/添加/删除：names[0] = "x" / append() / insert() / del / pop() / remove()
+- 长度：len(names)
+## Python 第 4 章 · 操作列表（学到列表解析）
+- 遍历：for x in names:（行尾冒号 + 循环体缩进）
+- range()：range(1,6) 得 1~5；range(1,20,2) 第三个参数是步长
+- list() 转换：list(range(1,6)) 
+  [1,2,3,4,5]
+- 统计函数：min() / max() / sum()
+- 列表解析（今天学到的重点）：
+  [value**2 for value in range(1,11)]  
+  1~10 的平方
+  [value**3 for value in range(1,11)]  
+ 立方
+  写法 = 方括号 + 表达式 + for 循环，一行顶原来三四行
+## Python 踩坑（今日积累）
+- **变量名不能用数字开头**：`3的倍数` 
+ SyntaxError: invalid syntax
+ 改成英文小写+下划线，如 `multiples_of_3`
+- **for 语句行尾必须打冒号 `:`**，下一行循环体要缩进
+  例：`for m in multiples_of_3:` 
+冒号不能少，少了直接 SyntaxError
+  （对比 C++：C++ 用 { } 包代码块且不带冒号，Python 用冒号+缩进）
+- 变量名规范：全英文小写+下划线。Python 3 技术上支持中文名，但别用——
+  洛谷/题解/PyTorch 全是英文，看不懂别人的、别人也看不懂你的
+- 理解：print(list) 是"整体看一眼"，for 是"逐个处理"。书让用 for 是为了练处理动作
+- sorted() 和 sort() 的区别：sorted() 返回新列表；list.sort() 原地改
