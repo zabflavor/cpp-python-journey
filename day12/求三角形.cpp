@@ -1,21 +1,21 @@
 #include <iostream>
-#include <cstdio>      // printf ÐèÒª
+#include <cstdio>      // printf éœ€è¦
 using namespace std;
 
 int main() {
     int n;
     cin >> n;
     int num = 1;
-    //µÚÒ»²¿·Ö£º·½Õó
+    //ç¬¬ä¸€éƒ¨åˆ†ï¼šæ–¹é˜µ
     for (int i = 1; i <= n; i++) {
         for (int j = 1; j <= n; j++) {
             printf("%02d", num++);
         }
-        cout << endl;//Êä³öÁÐ
+        cout << endl;//è¾“å‡ºåˆ—
 
     }
     cout << endl;
-    //µÚ¶þ²¿·Ö£ºÈý½ÇÐÎ
+    //ç¬¬äºŒéƒ¨åˆ†ï¼šä¸‰è§’å½¢
     num = 1;
     for (int i = 1; i <= n; i++) {
         for (int s = 1; s <= n-i; s++) {
