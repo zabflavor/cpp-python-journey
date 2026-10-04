@@ -1,33 +1,33 @@
 #include<iostream>
 using namespace std;
-//1¡¢ÎŞ²ÎÎŞ·µ
+//1ã€æ— å‚æ— è¿”
 void test01() {
 	cout << "this is test01" << endl;
 
 }
-//2¡¢ÓĞ²ÎÎŞ·µ
+//2ã€æœ‰å‚æ— è¿”
 void test02(int a) {
 	cout << "this is test02 a ="<<a << endl;
 }
-//3¡¢ÎŞ²ÎÓĞ·µ
+//3ã€æ— å‚æœ‰è¿”
 int test03() {
 	cout<<"this is test 03" << endl;
 	return 1000;
 }
-//4¡¢ÓĞ²ÎÓĞ·µ
+//4ã€æœ‰å‚æœ‰è¿”
 int test04(int a) {
 	cout << "this is a test04 a=" << a << endl;
 	return a;
 }
 int main() {
-	//1¡¢ÎŞ²ÎÎŞ·µº¯Êıµ÷ÓÃ
+	//1ã€æ— å‚æ— è¿”å‡½æ•°è°ƒç”¨
 	test01();
-	//2¡¢ÓĞ²ÎÎŞ·µº¯Êıµ÷ÓÃ
+	//2ã€æœ‰å‚æ— è¿”å‡½æ•°è°ƒç”¨
 	test02(100);
-	//3¡¢ÎŞ²ÎÓĞ·µº¯Êıµ÷ÓÃ
+	//3ã€æ— å‚æœ‰è¿”å‡½æ•°è°ƒç”¨
 	int num1 = test03();
 	cout << "num1=" << num1 << endl;
-	//4¡¢ÓĞ²ÎÓĞ·µº¯Êıµ÷ÓÃ
+	//4ã€æœ‰å‚æœ‰è¿”å‡½æ•°è°ƒç”¨
 	int num2 =test04(10000);
 	cout << "num2=" << num2 << endl ;
 	system("pause");
