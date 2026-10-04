@@ -1,27 +1,27 @@
 #include<iostream>
 using namespace std;
-//Öµ´«µÝ
-//¶¨Òåº¯Êý£¬ÊµÏÖÁ½¸öÊý×Ö½øÐÐ½»»»
-//Èç¹ûº¯Êý²»ÐèÒª·µ»ØÖµ£¬ÉùÃ÷µÄÊ±ºò¿ÉÒÔÐ´void
+//å€¼ä¼ é€’
+//å®šä¹‰å‡½æ•°ï¼Œå®žçŽ°ä¸¤ä¸ªæ•°å­—è¿›è¡Œäº¤æ¢
+//å¦‚æžœå‡½æ•°ä¸éœ€è¦è¿”å›žå€¼ï¼Œå£°æ˜Žçš„æ—¶å€™å¯ä»¥å†™void
 void change(int num1, int num2) {
-	cout << "½»»»Ç°£º" << endl;
+	cout << "äº¤æ¢å‰ï¼š" << endl;
 	cout << "num1=" << num1 << endl;
 	cout << "num2=" << num2 << endl;
 	int initial = num1;
 	num1 = num2;
 	num2 = initial;
-	cout << "½»»»ºó£º" << endl;
+	cout << "äº¤æ¢åŽï¼š" << endl;
 	cout << "num1=" << num1 << endl;
 	cout << "num2=" << num2 << endl;
-	//return; ·µ»ØÖµ²»ÐèÒªµÄÊ±ºò¿ÉÒÔ²»Ð´return
+	//return; è¿”å›žå€¼ä¸éœ€è¦çš„æ—¶å€™å¯ä»¥ä¸å†™return
 }
 int main() {
 	int a = 10;
 	int b = 39;
 	cout << "a=" << a << endl;
 	cout << "b=" << b << endl;
-	//º¯ÊýµÄÐÎ²Î·¢Éú´«µÝ£¬²»»áÓ°ÏìÊµ²Î
-	change(a, b);//ÊÇ°Ña£¬b¸øÁËnum1,num2¡£a£¬b±¾ÉíÃ»±ä
+	//å‡½æ•°çš„å½¢å‚å‘ç”Ÿä¼ é€’ï¼Œä¸ä¼šå½±å“å®žå‚
+	change(a, b);//æ˜¯æŠŠaï¼Œbç»™äº†num1,num2ã€‚aï¼Œbæœ¬èº«æ²¡å˜
 	cout << "a=" << a << endl;
 	cout << "b=" << b << endl;
 	system("pause");
