@@ -1,0 +1,14 @@
+#include"change.h"
+
+
+
+//函数的定义
+void change(int a, int b)
+{
+	int initial = a;
+	a = b;
+	b = initial;
+
+	cout << "a=" << a << endl;
+	cout << "b=" << b << endl;
+}
