@@ -2,7 +2,7 @@
 
 
 
-//º¯ÊýµÄ¶¨Òå
+//ÂºÂ¯ÃŠÃ½ÂµÃ„Â¶Â¨Ã’Ã¥
 void change(int a, int b)
 {
 	int initial = a;
