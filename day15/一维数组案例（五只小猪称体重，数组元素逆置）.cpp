@@ -2,14 +2,14 @@
 using namespace std;
 int main() {
 	int arr[5] = { 300,350,400,200,250 };
-	int max = 0;//arr[0]¸üºÏÊÊ
+	int max = 0;//arr[0]æ›´åˆé€‚
 	for (int i = 0; i < 5; i++) {
 		if (arr[i] > max) {
-			max = arr[i];  //Á½¸öµÈºÅÊÇÅĞ¶Ï£¬Êä³öÖ»ÓĞtrue or false
+			max = arr[i];  //ä¸¤ä¸ªç­‰å·æ˜¯åˆ¤æ–­ï¼Œè¾“å‡ºåªæœ‰true or false
 		}
 	
 	}
-	cout << "×îÖØµÄĞ¡ÖíÌåÖØÎª" << max << endl;
+	cout << "æœ€é‡çš„å°çŒªä½“é‡ä¸º" << max << endl;
 
 	cout << endl;
 
@@ -23,7 +23,7 @@ int main() {
 	for (; start < end;) {
 		int temp = arr2[start];
 		arr2[start] = arr2[end];
-		arr2[end] = temp;        //ÄæÖÃ¾ÍÊÇ²»¶Ï½»»»Ë³Ğò
+		arr2[end] = temp;        //é€†ç½®å°±æ˜¯ä¸æ–­äº¤æ¢é¡ºåº
 		start++, end--;
 	}
 	for (int a = 0; a < sizeof(arr2) / sizeof(arr[0]); a++) {
