@@ -7,14 +7,14 @@ int main() {
 		{90,50,100},
 		{60,70,80}
 	};
-	string names[3] = { "ÕÅÈı","ÀîËÄ","ÍõÎå" };
+	string names[3] = { "å¼ ä¸‰","æå››","ç‹äº”" };
 	for (int i = 0; i < 3; i++) {
-		int sum = 0;//Í³¼Æ·ÖÊı×ÜºÍµÄ±äÁ¿
+		int sum = 0;//ç»Ÿè®¡åˆ†æ•°æ€»å’Œçš„å˜é‡
 		for (int j = 0; j < 3; j++) {
 			sum += score[i][j];
 			//cout << score[i][j] << "  ";
 		}
-		cout << names[i]<<"µÄ×Ü·ÖÎª£º" << sum << endl;
+		cout << names[i]<<"çš„æ€»åˆ†ä¸ºï¼š" << sum << endl;
 	}
 	system("pause");
 	return 0;
