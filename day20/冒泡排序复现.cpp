@@ -2,7 +2,7 @@
 using namespace std;
 int main() {
 	int arr[8] = { 4,3,6,8,7,5,2,1 };
-	cout << "ÅÅĞòÇ°" << endl;
+	cout << "Ã…Ã…ÃÃ²Ã‡Â°" << endl;
 	for (int i = 0; i < 8; i++) {
 		cout << arr[i] << " ";
 	}
@@ -17,7 +17,7 @@ int main() {
 		}
 	}
 	cout << endl;
-	cout<<"ÅÅĞòºó" << endl;
+	cout<<"Ã…Ã…ÃÃ²ÂºÃ³" << endl;
 	for (int i = 0; i < 8; i++) {
 		cout << arr[i] << " ";
 	}
