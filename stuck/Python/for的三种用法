@@ -1,0 +1,13 @@
+for循环的三种用法
+1、遍历列表（一个一个取出列表中的元素）
+   fruits=['苹果','橙子','香蕉']
+   for fruit in fruits:
+       print(f"I like {fruit}")
+2、使用range()循环（让代码按指定的次数重复进行）
+   for i in range(1,6)  #从1到5
+       print(f"这是第{i}次")
+3、遍历字符串（一个一个去除字符串中的字符）
+   name="Pyhton"
+   for ch in name:
+       print(ch)
+       
