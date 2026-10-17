@@ -7,10 +7,10 @@ struct Student {
 	int score;
 };
 void studentarrange(struct Student s) {
-	cout << "ĞÕÃû£º" << s.name << "  ÄêÁä£º" << s.age << "  ·ÖÊı£º" << s.score << endl;
+	cout << "å§“åï¼š" << s.name << "  å¹´é¾„ï¼š" << s.age << "  åˆ†æ•°ï¼š" << s.score << endl;
 }
 int main() {
-	struct Student s1 = { "ÕÅÈı",18,100 };
+	struct Student s1 = { "å¼ ä¸‰",18,100 };
 	studentarrange(s1);
 	return 0;
 }
