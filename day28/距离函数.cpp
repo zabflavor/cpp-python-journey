@@ -1,6 +1,6 @@
 #include<iostream>
 #include <cmath>
-#include <iomanip>      // Ìá¹© fixed ºÍ setprecision£¬ÓÃÀ´¿ØÖÆĞ¡ÊıÎ»Êı
+#include <iomanip>      // æä¾› fixed å’Œ setprecisionï¼Œç”¨æ¥æ§åˆ¶å°æ•°ä½æ•°
 using namespace std;
 int main() {
 	double number[6] = {};
@@ -12,7 +12,7 @@ int main() {
         b = sqrt((number[1] - number[5]) * (number[1] - number[5]) + (number[0] - number[4]) * (number[0] - number[4]));
         c = sqrt((number[5] - number[3]) * (number[5] - number[3]) + (number[4] - number[2]) * (number[4] - number[2]));
         double p = a + b + c;
-        cout << fixed << setprecision(2)            // ±£Áô 1 Î»Ğ¡Êı£¨Ïàµ±ÓÚ %.1f£©
-            << p << endl;   // Êä³ö
+        cout << fixed << setprecision(2)            // ä¿ç•™ 1 ä½å°æ•°ï¼ˆç›¸å½“äº %.1fï¼‰
+            << p << endl;   // è¾“å‡º
         return 0;
 }
