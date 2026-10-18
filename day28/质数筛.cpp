@@ -1,4 +1,4 @@
-//��Ŀû��ǿ��ȥ�ص�ʱ�򣬲�Ҫȥ��
+//题目没有强调去重的时候，不要去重
 #include<iostream>
 using namespace std;
 int main() {
@@ -9,7 +9,7 @@ int main() {
 		cin >> array[i];
 	}
     for (long long i = 0;i<n ; i++) {        
-        // ��һ�����ж� i �ǲ�������
+        // 第一步：判断 i 是不是质数
         bool isPrime = true;
         if (array[i] == 1) {
             isPrime = false;
