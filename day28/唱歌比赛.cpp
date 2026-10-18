@@ -7,12 +7,12 @@ double calculate(int m,int array[]) {
 	int sum = 0;
 	for (int i = 0; i < m; i++) {
 		cin >> array[i];
-		sum += array[i];//ÇóºÍÊ±ÓÃ£¬sum=sum+a[i]
-		if (array[i] > maxv)maxv = array[i];//Çó×î´óÖµ         ÕâÑù×Ó±£Ö¤ÁËÈ¡×î¸ß·ÖµÄÊ±ºòÖ»È¥µôÒ»¸ö
-		if (array[i] < minv)minv = array[i];//Çó×îĞ¡Öµ
+		sum += array[i];//æ±‚å’Œæ—¶ç”¨ï¼Œsum=sum+a[i]
+		if (array[i] > maxv)maxv = array[i];//æ±‚æœ€å¤§å€¼         è¿™æ ·å­ä¿è¯äº†å–æœ€é«˜åˆ†çš„æ—¶å€™åªå»æ‰ä¸€ä¸ª
+		if (array[i] < minv)minv = array[i];//æ±‚æœ€å°å€¼
 	}
 	double ans = (double)(sum - maxv - minv) / (m - 2);
-	//µÚÒ»¸ödoubleÊÇÉùÃ÷ansÓÃÀ´´æĞ¡Êı£¬µÚ¶ş¸ödoubleÊÇ±£Ö¤³ı·¨ÕâÒ»²½°´Ğ¡Êı¹æÔòËã£¨Ç°ÃæµÄdouble¹Ü²»µ½³ı·¨£©
+	//ç¬¬ä¸€ä¸ªdoubleæ˜¯å£°æ˜ansç”¨æ¥å­˜å°æ•°ï¼Œç¬¬äºŒä¸ªdoubleæ˜¯ä¿è¯é™¤æ³•è¿™ä¸€æ­¥æŒ‰å°æ•°è§„åˆ™ç®—ï¼ˆå‰é¢çš„doubleç®¡ä¸åˆ°é™¤æ³•ï¼‰
 	return (double)ans;
 }
 int main() {
