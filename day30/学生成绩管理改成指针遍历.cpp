@@ -9,7 +9,7 @@ struct student {
 };
 void printAll(int n, struct student array[]) {
 	for (struct student *p=array; p < array+n; p++) {
-		cout << "ĞÕÃû:" << p->name << "  ÓïÎÄ³É¼¨:" <<p->score1 << "  ÊıÑ§³É¼¨:" << p->score2 << "  Ó¢Óï³É¼¨:" << p->score3 << endl;
+		cout << "å§“å:" << p->name << "  è¯­æ–‡æˆç»©:" <<p->score1 << "  æ•°å­¦æˆç»©:" << p->score2 << "  è‹±è¯­æˆç»©:" << p->score3 << endl;
 	}
 }
 void calcavg(int n, struct student array[]) {
@@ -25,9 +25,9 @@ void calcavg(int n, struct student array[]) {
 	pingjunfen1 = zongfen[0] / n;
 	pingjunfen2 = zongfen[1] / n;
 	pingjunfen3 = zongfen[2] / n;
-	cout << "ÓïÎÄÆ½¾ù·ÖÎª:" << pingjunfen1 << endl;
-	cout << "ÊıÑ§Æ½¾ù·ÖÎª:" << pingjunfen2 << endl;
-	cout << "Ó¢ÓïÆ½¾ù·ÖÎª:" << pingjunfen3 << endl;
+	cout << "è¯­æ–‡å¹³å‡åˆ†ä¸º:" << pingjunfen1 << endl;
+	cout << "æ•°å­¦å¹³å‡åˆ†ä¸º:" << pingjunfen2 << endl;
+	cout << "è‹±è¯­å¹³å‡åˆ†ä¸º:" << pingjunfen3 << endl;
 }
 void findtop(int n, struct student array[]) {
 	int sum[5] = {};
@@ -37,19 +37,19 @@ void findtop(int n, struct student array[]) {
 	int best = 0;
 	for (int i = 0; i < n; i++) {
 		if (sum[i] > sum[best]) {
-			best = i;//Ö»´æÏÂ±ê
+			best = i;//åªå­˜ä¸‹æ ‡
 		}
 	}
-	cout << "×î¸ß·ÖÎª" << array[best].name << "·ÖÊıÎª£º" << sum[best] << endl;
+	cout << "æœ€é«˜åˆ†ä¸º" << array[best].name << "åˆ†æ•°ä¸ºï¼š" << sum[best] << endl;
 }
 
 
 int main() {
-	struct student array[] = { {"Ğ¡Ã÷",88,92,79},
-							   {"Ğ¡ºì",95,87,90},
-							   {"Ğ¡¸Õ",76,85,82},
-							   {"Ğ¡Àö",91,78,88},
-							   {"Ğ¡»ª",83,90,85} };
+	struct student array[] = { {"å°æ˜",88,92,79},
+							   {"å°çº¢",95,87,90},
+							   {"å°åˆš",76,85,82},
+							   {"å°ä¸½",91,78,88},
+							   {"å°å",83,90,85} };
 	printAll(5, array);
 	calcavg(5, array);
 	findtop(5, array);
