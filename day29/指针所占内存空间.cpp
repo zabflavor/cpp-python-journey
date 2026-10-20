@@ -1,11 +1,11 @@
 #include<iostream>
 using namespace std;
 int main() {
-//ָ��Ҳ������������
+//指针也是种数据类型
 	int a = 10;
 	int* p = &a;
-	//��32λ����ϵͳ�£�ָ����ռ4���ֽڿռ��С��������ʲô����������
-	//��64λ����ϵͳ�£�ָ����ռ8���ֽڿռ��С
+	//在32位操作系统下，指针是占4个字节空间大小，不管是什么数据盘类型
+	//在64位操作系统下，指针是占8个字节空间大小
 	cout << "sizeof(int *)=" << sizeof(int*) << endl;
 	cout << "sizeof(float *)=" << sizeof(float*) << endl;
 	cout << "sizeof(double *)=" << sizeof(double*) << endl;
