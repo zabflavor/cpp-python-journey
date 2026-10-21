@@ -1,6 +1,6 @@
 #include<iostream>
 using namespace std;
-//1¡¢Öµ´«µİ£¨ĞÎ²Î²»ĞŞÊÎÊµ²Î£©
+//1ã€å€¼ä¼ é€’ï¼ˆå½¢å‚ä¸ä¿®é¥°å®å‚ï¼‰
 void func1(int a, int b) {
 	int temp = a;
 	a = b;
@@ -8,7 +8,7 @@ void func1(int a, int b) {
 	cout << "a="<<a<<endl;
 	cout<<"b=" << b << endl;
 }
-//2¡¢µØÖ·´«µİ£¨ĞÎ²ÎĞŞÊÎÊµ²Î£©
+//2ã€åœ°å€ä¼ é€’ï¼ˆå½¢å‚ä¿®é¥°å®å‚ï¼‰
 void func2(int* a, int* b) {
 	int temp = *a;
 	*a = *b;
