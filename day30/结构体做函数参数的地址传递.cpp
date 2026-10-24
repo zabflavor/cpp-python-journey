@@ -1,4 +1,5 @@
 #include<iostream>
+#include<string>
 using namespace std;
 struct student {
 	string name;
@@ -6,7 +7,7 @@ struct student {
 	int score;
 };
 void printstudent2(struct student* p) {
-	cout << "×Óº¯Êý2ÖÐ ÐÕÃû£º" << p->name << "ÄêÁä£º" << p->age << "·ÖÊý£º" << p->score << endl;
+	cout << "å­å‡½æ•°2ä¸­ å§“åï¼š" << p->name << "å¹´é¾„ï¼š" << p->age << "åˆ†æ•°ï¼š" << p->score << endl;
 }
 int main() {
 	struct student s1;
@@ -16,5 +17,5 @@ int main() {
 	printstudent2(&s1);
 	return 0;
 }
-//Öµ´«µÝÐÎ²Î²»ÐÞÊÎÊµ²Î
-//µØÖ·´«µÝÐÎ²ÎÐÞÊÎÊµ²Î
+//å€¼ä¼ é€’å½¢å‚ä¸ä¿®é¥°å®žå‚
+//åœ°å€ä¼ é€’å½¢å‚ä¿®é¥°å®žå‚
