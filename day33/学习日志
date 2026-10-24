@@ -1,0 +1,57 @@
+学习日志 · 2026-10-23（周五）
+W5 第 5 天 · 主题：Python 第 9 章 类与对象 · 主产出：书上练习 9-1 ~ 9-9
+一、今天写了什么
+读书 + 做练习（9-1 ~ 9-3 那三节的练习都做了）
+　· 9-1 创建和使用类：class 怎么写、init 是什么、实例怎么建
+　· 9-2 使用类和实例：给属性设默认值、直接改属性和用方法改属性
+　· 9-3 继承：子类怎么接父类的东西
+　· 9-4 导入类那一节还没开始（它的第一个练习 9-10 我还没做）
+文件 1：9-1~9-3.py
+　· 练习 9-1 餐馆：class Restaurant，init 里存 restaurant_name 和 cuisine_type，方法 describe_restaurant 和 open_restaurant，建了一个实例 ZAB / Chinese food
+　· 练习 9-2 三家餐馆
+　· 练习 9-3 用户：class User，存 first_name 和 last_name，方法 describe_user 和 guess_user，实例 zab
+文件 2：9-4~9-5.py
+　· 练习 9-4 就餐人数：加了 number_severed，在 init 里直接给默认值 0；两个改法都写了 —— 一个是直接赋值覆盖，一个是 += 往上加
+　· 练习 9-5 尝试登录次数：login_attempts，方法 increment_login_attempts（每次加一）、reset_login_attempts（清零），还自己加了个 output 专门打印次数；main 里用 for 循环连加 7 次，再清零
+文件 3：9-6~9-9.py（今天最值钱的一份）
+　· 练习 9-6 冰淇淋小店：class IceCreamStand(Restaurant) 继承，用 super().init() 把父类那两个属性接过来，再加自己的 flavors 列表
+　· 练习 9-7 管理员：class Admin(User) 继承，加了 privileges 列表
+　· 练习 9-8 权限：把 Privileges 单独写成一个类，在 Admin 里 self.privileges2 = Privileges()，把它的实例挂成自己的属性
+　· 练习 9-9 电瓶升级
+二、今天的知识点
+类 = 把数据和函数打包在一起
+　· 以前我写的函数都住在盒子外面，数据要一个个传进去
+　· 类把函数也装进盒子，函数靠 self 自己拿数据
+　· 所以外面调用时少传一个参数 —— self 是 Python 自动递进来的
+self 就是"这个实例自己"
+　· 定义方法时第一个参数必须写 self，调用时却不传它
+　· 它回答的是一个很具体的问题：函数住进盒子以后，怎么知道这次要打印哪家餐馆的信息？
+init 是"建实例时自动跑的那一个"
+　· 两边各两个下划线
+　· 它的活儿是把传进来的参数挂到 self 上，变成这个实例自己的属性
+属性可以在 init 里直接给默认值
+　· 比如 number_severed = 0 —— 建出来的餐馆，就餐人数一开始都是 0
+　· 需要传进来的才写进参数列表（像餐馆名、菜系），一开始就一样的才写死在里面
+改属性的两种办法，效果不一样
+　· 直接赋值：self.number_severed = number —— 不管原来多少，覆盖掉
+　· 累加：self.number_severed += number —— 在原来的基础上加
+　· 该用哪个，取决于"这次是重新数，还是接着上一次数"
+继承：子类先全盘接过来，再补自己要的那部分
+　· super().init(...) 就是把父类 init 的活儿先干一遍
+　· 接完之后再加自己的东西（冰淇淋店加 flavors，管理员加 privileges）
+　· 最关键的一点：父类的方法子类不用重写，直接就能调 —— 我这行 stand.describe_restaurant() 和 stand.open_restaurant()，IceCreamStand 里根本没写这两个方法，它们是从 Restaurant 继承来的
+组合：一个类里放另一个类的实例当属性
+　· Admin 里 self.privileges2 = Privileges()，于是要调它的方法时得走两层：admin.privileges2.shou_privilege()
+　· 继承是"我就是你这种"，组合是"我身上装了一个你"
+　· 这是 9-7 到 9-8 的升级：权限从"塞在 Admin 里的一个列表"变成了"一个独立的类，被 Admin 装在身上"
+三、今天的收获
+继承最直观的证据：子类里没写的方法，照样能调。
+　stand.describe_restaurant() 这一行我写完才反应过来 —— IceCreamStand 里根本没有这个方法，它是从 Restaurant 继承来的。"继承"这个词之前只是个词，这一行让它变成了事实。
+从 9-7 到 9-8，我自己走了一遍"塞在里面"到"单独成类再挂上去"。
+　权限先是被我写成 Admin 里的一个列表，后来单独写成 Privileges 类，再在 Admin 里造一个实例挂到身上。后者好在哪：权限以后自己也能有方法、有状态，不用什么都塞进 Admin。
+super().init() 就是"先把爸爸的活儿干一遍，再干我自己的"。
+　子类 init 里第一件事就是调它，这句话背下来就够。
+属性给默认值还是靠参数传，判断标准很实在：
+　每个实例一开始都一样 → 写死在 init 里（number_severed = 0）；每个实例不一样 → 从参数传进来（餐馆名、菜系）。
+照书做练习的好处是每一步都有明确要求，做完一个就知道自己会没会。
+　今天七个练习做下来，哪一节没懂，第二天一翻书就知道在哪。
