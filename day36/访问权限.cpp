@@ -1,27 +1,27 @@
 #include<iostream>
 using namespace std;
-//����Ȩ�ޣ�����Ҳ�ǣ�
-//1������Ȩ�� public      ��Ա���ڿ��Է��ʣ�����Ҳ���Է���
-//2������Ȩ�� protected   ��Ա���ڿ��Է��ʣ����ⲻ���Է��ʣ����ױ����е����ݶ���Ҳ�����ã�
-//3��˽��Ȩ�� private     ��Ա���ڿ��Է��ʣ����ⲻ���Է��ʣ����Ӳ����Է��ʸ��׵�˽�����ݣ�
+//访问权限（函数也是）
+//1、公共权限 public      成员类内可以访问，类外也可以访问
+//2、保护权限 protected   成员类内可以访问，类外不可以访问（父亲保护中的内容儿子也可以用）
+//3、私有权限 private     成员类内可以访问，类外不可以访问（儿子不可以访问父亲的私有内容）
 class person {
 public:
 	string name;
 protected:
 	string car;
 private:
-	string password;
+	int password;
 public:
 	void func() {
-		name = "����";
-		car = "������";
+		name = "张三";
+		car = "拖拉机";
 		password = 123456;
 	}
 };
 int main() {
-	//ʵ�����������
+	//实例化具体对象
 	person s1;
 	s1.name = "zab";
-	//s1.car = "����";   ��������ʲ���
+	//s1.car = "奔驰";   在类外访问不到
 	return 0;
 }
