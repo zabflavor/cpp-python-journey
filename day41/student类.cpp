@@ -9,22 +9,22 @@ public:
 		m_score1 = 0;
 		m_score2 = 0;
 		m_score3 = 0;
-		cout << "ÎÞ²Î¹¹Ôìº¯ÊýµÄµ÷ÓÃ" << endl;
+		cout << "æ— å‚æž„é€ å‡½æ•°çš„è°ƒç”¨" << endl;
 	}
 	Student(int a,int b,int c) {
 		m_score1 = a;
 		m_score2 = b;
 		m_score3 = c;
-		cout << "ÓÐ²Î¹¹Ôìº¯ÊýµÄµ÷ÓÃ" << endl;
+		cout << "æœ‰å‚æž„é€ å‡½æ•°çš„è°ƒç”¨" << endl;
 	}
 	Student(const Student&p) {
 		m_score1 = p.m_score1;
 		m_score2 = p.m_score2;
 		m_score3 = p.m_score3;
-		cout << "¿½±´¹¹Ôìº¯ÊýµÄµ÷ÓÃ" << endl;
+		cout << "æ‹·è´æž„é€ å‡½æ•°çš„è°ƒç”¨" << endl;
 	}
 	~Student() {
-		cout << "Îö¹¹º¯ÊýµÄµ÷ÓÃ" << endl;
+		cout << "æžæž„å‡½æ•°çš„è°ƒç”¨" << endl;
 	}
 	int getscore1() {
 		return m_score1;
