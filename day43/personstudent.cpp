@@ -6,23 +6,23 @@ protected:
 	int m_num2;
 public:
 	person() {
-		cout << "perosnµÄ¹¹Ôìº¯Êı" << endl;
+		cout << "perosnçš„æ„é€ å‡½æ•°" << endl;
 	}
 	~person() {
-		cout << "personµÄÎö¹¹º¯Êı" << endl;
+		cout << "personçš„ææ„å‡½æ•°" << endl;
 	}
 };
 class student :public person {
 public:
 	int m_num3;
 	student() {
-		cout << "studentµÄ¹¹Ôìº¯Êı" << endl;
+		cout << "studentçš„æ„é€ å‡½æ•°" << endl;
 	}
 	void function() {
 		cout << "m_num1= " << m_num1 << endl;
 	}
 	~student() {
-		cout<<"studentµÄÎö¹¹º¯Êı" << endl;
+		cout<<"studentçš„ææ„å‡½æ•°" << endl;
 	}
 };
 int main() {
