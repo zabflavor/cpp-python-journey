@@ -1,0 +1,128 @@
+学习日志 · 2026-11-08（周日）
+W7 第 7 天 · MNIST 跑通 · 主产出 mnist.py 准确率 96.13%
+一、今天写了什么
+
+
+D:\zab\day48\mnist\mnist.py —— 第一段，只求跑通
+　从 import 到打印准确率，约 40 行。数据加载 → DataLoader 分批 → 两层全连接网络 → 交叉熵损失 → Adam 优化器 → 训练一轮 → 测试。
+　自检结果：len(dataset) 是 60000，dataset[0][0].shape 是 [1, 28, 28]，len(train_loader) 是 938，len(test_loader) 是 157，images.shape 是 [64, 1, 28, 28]，labels.shape 是 [64]，最终准确率 96.13%。
+
+
+同一份文件第二段 —— 逐行中文注释
+　几乎每行都加了注释。其中有两处是我自己查出来、正课没讲的：view 里 -1 的写法；no_grad 只管不算梯度、不等于切到 eval 模式。
+　自检结果：注释覆盖到 137 行，改完再跑仍然 96.13%。
+
+
+二、今天的知识点
+
+
+训练一个模型是固定的五步，顺序不能换
+　取一批数据 → 前向算出预测 → 和答案比出差多少（损失）→ 反向算每个参数该往哪调 → 按方向改参数。
+　这五步走完一次模型变好一点点，走完 938 批是一轮（一个 epoch）。
+
+
+zero_grad 必须在前，因为梯度会累加
+　PyTorch 默认把每批算出的梯度往参数的 .grad 上累加，不清零，这一批就会叠到上一批上。
+
+
+backward 和 step 是两件事
+　backward 只算方向，不改参数；step 才按方向真正迈一步。漏掉 step，损失会一条直线不动。
+
+
+网络类的三段结构
+　继承 nn.Module，PyTorch 才认它是模型；
+　init 里定义层，只说“层有多大”，这里看不到数据；
+　forward 里定义数据怎么流动，这里才碰数据；
+　调 model(images) 时 PyTorch 自动去调 forward，不需要自己写 model.forward(images)。
+
+
+view 是重排不是剪切，元素总数不能变
+　[64, 1, 28, 28] 一共 64 乘 1 乘 28 乘 28 等于 50176 个数字，view 之后两个参数相乘必须还是 50176，所以是 [64, 784]。
+　28 乘 28 等于 784，这个数同时决定了两处：view 的第二个参数、fc1 的输入维度。它们不是两个空，是一个决定。
+
+
+第一个参数别写死 64
+　最后一批只有 32 张，写死 64 会报形状不匹配。用 x.size(0) 取“这一批实际有几张”。
+
+
+优化器和学习率能决定成败
+　同一个网络，Adam 加 lr=0.001 跑出 96.33%，换成 SGD 加 lr=0.1 只有 92.73%，过不了 95 的线。
+　所以跑不上去的时候，先动 lr 和优化器，别急着加层改结构。
+
+
+同一份代码跑两次结果不一样，是正常的
+　初始权重随机、shuffle 打乱也随机。要公平比较两个设置，先 torch.manual_seed(0) 把随机数固定住，这叫可复现性。
+
+
+no_grad 不等于 eval
+　no_grad 只关掉“记录梯度”；Dropout 和 BatchNorm 的行为要另外用 model.eval() 才切换。今天这个网络没有这两层所以不影响，换成 ResNet 就会踩。
+
+
+40 行里真正新的只有三样
+　Tensor（会记录自己是怎么被算出来的，所以能自动求导）、backward（自动逆着算梯度）、no_grad（关掉记录）。
+　其余九成是旧知识换皮：import 对应 #include；datasets.MNIST(...) 对应 struct 定义再声明变量；class 加 init 对应类封装和构造函数；遍历 DataLoader 对应 for 循环；累加 correct 对应计数型。
+
+
+三、今天的正课 / 卡点全过程
+· 第一问：「torchvision 为什么报错」
+　我以为是装包问题，先查解释器，打印出来是 D:\开发语言\pythoon\python.exe，路径是对的。
+　真正的原因在截图里：第 7 行报 NameError: name 'torchvision' is not defined。
+　卡在语法层的细节：from torchvision import datasets 只把 datasets 和 transforms 两个名字带进来，torchvision 这个名字本身没有被定义。要用它，得单独写一行 import torchvision。
+· 第二问：「images 为什么报错了」
+　两次错叠在一起。先写 print(images.shape)，但 images 从来没被赋过值；我把 images 删掉只剩 print(.shape)，就变成语法错。
+　卡在想法层：我以为 images 是某个现成的东西，其实它是 for 循环或解包那一刻才产生的名字。
+　收到的方法：一批数据是一个二元组（64 张图加 64 个标签），要么 for images, labels in train_loader 拆开，要么 images, labels = next(iter(train_loader)) 拆开。
+· 第三处：把网络类写完贴回去
+　def init(self) 和 super().init() 都少了双下划线；self.fc1 = nn.Linear(images.size(0), 512) 把 forward 里才有的 images 搬进了 init；x.view(x.size(0), 4) 第二个参数写成 4。
+　卡在想法层两处：没分清“造网络”和“喂数据”是两件事；把“几维”当成了“每维多长”。
+　收到的方法：view 之前先做乘法自检，两个参数相乘必须等于元素总数 50176。784 乘 64 对得上，4 乘 64 差两百倍。
+· 最后一句：「我现在就是一种莫名其妙看到一大堆不熟的代码的茫然，也不知道有什么实际用途，只能硬把代码记下来」
+　这句是今天最该被回答的一句。卡的不是知识点，是位置感——手在动，但看不见自己站在整张地图的哪一格。
+　收到的方法：先给五步流水线的图，再说清 MNIST 本身没有实用价值、价值在骨架；然后把 40 行清点一遍，指出只有三样是新的；最后给一条界线——能查的不要记，只有顺序和因果关系要记。
+四、今天踩的坑 & 解决办法
+
+
+用了 from 导入之后又去用模块名
+　现象：NameError: name 'torchvision' is not defined，明明上一行刚碰过 torchvision。
+　根因：from A import B 只把 B 带进来，A 这个名字没有被定义。
+　解决：要同时用 A 和 B，就多写一行 import torchvision。
+
+
+images 没赋值，删到最后只剩一个点
+　现象：先报 NameError: name 'images' is not defined；改成 print(.shape) 后报 invalid syntax。
+　根因：images 只在 for 循环或解包那一刻才产生，代码里从没给它赋过值；点号前面必须站着一个具体的东西。
+　解决：for images, labels in train_loader 加 break，或者 images, labels = next(iter(train_loader))。
+
+
+def init(self) 少双下划线
+　现象：网络对象建出来了，但层不存在，后面报属性找不到。
+　根因：Python 创建对象时会专门去找 init 这个名字，写成 init 就只是个普通方法，没人调用它。
+　解决：前后各两个下划线。这是本周第四、第五次栽在下划线上，前三次是 version。
+
+
+在 init 里用 images.size(0)
+　现象：NameError；就算不报错，含义也是错的。
+　根因：init 是造网络的地方，看不到数据；images 只活在 forward 里。
+　解决：这个位置要填的是“一张图有多少个数字”，28 乘 28 等于 784。
+
+
+x.view(x.size(0), 4) 第二个参数写成 4
+　现象：RuntimeError: shape '[64, 4]' is invalid for input of size 50176。
+　根因：把 view 的参数当成“几维”，实际含义是“每一维有多长”。
+　解决：写 784。自检动作固定成一条——两个参数相乘必须等于元素总数。
+
+
+粘贴代码时缩进整体丢失
+　现象：类定义、for 循环体、with 块全部顶格。
+　根因：从聊天框往编辑器粘，行首空格丢了。
+　解决：粘完先看缩进树，四层都要在：class 下一层、def 下一层、for 体内、with 内。
+
+
+五、今天的收获
+
+通关门 6 完整达成：CSV 落 50 条真实数据（11/6），今天再加一个能跑通的模型（96.13%）。
+★ 从“硬记代码”里走出来了。办法不是多背，是先找位置（五步流水线），再把已经会的东西清点一遍——40 行里只有三样是新的。这个动作以后每学一个新框架都要用。
+★ 建立了“能不能查”这条界线。784、512、64、0.001 全是能查的数字，不用记；要记的只有三条因果：zero_grad 为什么在前、backward 和 step 的分工、测试为什么要 no_grad。
+view 多了一条可执行的自检：先算总数，再看两个参数相乘对不对。这比“记住 784”可靠，换个数据集也能用。
+亲眼看到优化器和 lr 能决定成败：同一个网络，Adam 96.33%，SGD 92.73%。以后跑不上去先动这两个，别动结构。
+学到一个以后一定会踩的坑：no_grad 不等于 eval。今天网络里没有 Dropout 和 BatchNorm 所以没事，上 ResNet 就会遇上。
