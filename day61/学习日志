@@ -1,0 +1,50 @@
+学习日志 · 2026-11-20（周五）
+W9 第 5 天 · groupby 分组聚合 · 主产出：pandas_group_aggregation.py + groupby_tests.py
+一、今天写了什么
+· ~/Desktop/python/pandas/pandas_group_aggregation.py：P111/P112 跟课代码，用黑马课的 uniqlo.csv（2 万多行销售数据），覆盖单列分组、get_group 取某组、agg 分组聚合（多字段多函数）、filter 分组过滤（lambda 按组平均值筛选）
+· ~/Desktop/python/pandas/groupby_tests.py：自写关七连，全部跑通，用 students.csv 加“等级”列做分组
+· 补做边界用例：删掉 B 档只剩 A 档，验证 groupby 遇到单组不翻车
+· 销掉昨天欠的抽查题：84 vs 73 的“列也有标签和位置之分”，用自己的话答出来了
+· 目录整理：Python 文件从 ~/Desktop/python/ 收进 ~/Desktop/python/pandas/ 子目录
+二、今天的知识点
+groupby 出来的是“待运算的分组对象”（DataFrameGroupBy），不是表——打印它只有内存地址，看不到数据；要配合 agg / mean / size 这类运算才出结果
+分组统计的结果有两个形状变化：行索引从 0,1,2（每个人）变成 A、B（每个组名）；数据粒度从“每人一行”压成“每组一行”
+取一列 vs 取多列在 groupby 后照旧生效：groupby("等级")["数学"] 是一层括号 → Series；[["语文","数学","英语"]] 两层括号（里面是列表）→ DataFrame
+size() 数每组几行（人），结果一列；count() 数每组每列几个非空格子，结果一张表。有空格子时两者才分家：size 照算，count 跳过
+分组求平均再排序：avg = groupby(...)[列].mean() 得到 Series → avg.sort_values(ascending=False)，Series 的 sort_values 没有 by 参数；by 是 DataFrame.sort_values 专用
+sort_values(by=...) 的 by 只能放列名字符串，不能塞一张表——塞 groupby 结果会 KeyError
+按条件删行不用 drop：drop 按行索引（名字）删，布尔筛子按条件留。data[data["等级"]=="A"] 筛出 A 档，要赋值 data = ... 才留住，否则结果被丢掉
+表达式 / print / 赋值是三件事：表达式只算出答案交出来，print 让人看见，赋值让答案留下。sort_values、布尔筛子、groupby().mean() 都返回新表不动本体；df["列"]=值、df.loc[行,列]=值 是就地改本体
+布尔比较产生的是“一串布尔值”（布尔 Series，和表等长、带行索引），不是一个布尔值——loc 靠它按 True 放行
+agg 多字段多函数：groupby([列1,列2]).agg({"列名": "sum", "另一列": "mean"})；get_group(("北京","线下")) 取单个分组，分组值写成元组
+filter(lambda x: x.revenue.mean() > 200) 按“整组”筛选——组均值达标就留整组，否则整组删掉；和布尔筛子“按行留”是两种粒度
+三、今天的正课 / 卡点全过程
+· 视频确认后直接开敲：P111 分组聚合、P112 分组过滤，uniqlo.csv 近 2 万行，跟课代码零报错
+· 自写关从第 0 题造“等级”列开始——先认出这就是两天前 pandas_tests.py 第 5 例“新增一列”的同一动作，只是右边从三科相加换成 A/B 判断
+· 第 5 题合体题连撞两堵墙：先 TypeError（mean 算不了“姓名”文字列），改成只取数值列后又 KeyError（把一张表塞给 by）。复现报错原文后，理清“排序对象应是结果表、不是原表”，自己改对了两步写法
+· 改对后又撞第三个坑：avg 是 Series，sort_values 不接受 by 参数——删掉 by 才通。顺势把“一层括号 Series / 两层括号 DataFrame”在 groupby 上又印证一遍
+· 第 6 题边界：本来想 drop("B", axis=0) 删 B 档，报错 KeyError——“B”是列里的值、不是行索引；改用布尔筛子，确认“只留 A”要赋值才生效
+· 抽查题尾巴落定：数学是表头第三位、iloc 的 1 是从 0 数第二位，两个尺子量到不同列，84 vs 73 讲通
+四、今天踩的坑 & 解决办法
+把“一张表”当 by 传给 sort_values
+现象：KeyError，错误信息里带着整张分组结果表
+根因：by 只接受列名字符串，指定“按哪一列排”；用户想按分组均值排，但排序对象搞错了——应是结果表调用 sort_values，不是原表
+解决：先 groupby 算出 avg，再 avg.sort_values(ascending=False)
+mean 遇到文字列
+现象：TypeError: dtype 'str' does not support operation 'mean'
+根因：groupby().mean() 默认对所有列求平均，“姓名”是文字算不了（describe 会自动跳过，mean 不会）
+解决：中括号里只挑数值列，如 ["总分"]
+Series 的 sort_values 不接受 by
+现象：TypeError: unexpected keyword argument 'by'
+根因：avg = groupby(...)[单列名].mean() 返回 Series，本身就是一列，没有“按哪列排”的问题
+解决：Series 排序直接 sort_values(ascending=False)；想用 by 就把中括号改成两层，让它变 DataFrame
+drop 按值删行
+现象：data.drop("B", axis=0) 报 KeyError "['B'] not found in axis"
+根因：drop 认行索引（0,1,2...），“B”是等级列里的值，不是索引
+解决：布尔筛子按条件留行，且要赋值接住新表
+五、今天的收获
+★ 1. “返回新表 vs 就地修改”这条线今天彻底打通：sort_values、布尔筛子、groupby().mean() 都返回新表不赋值就白算；df["列"]=值 才是就地改。上一课没接住的“表达式单独写为什么没作用”，今天用布尔筛子自己撞出来、自己接住了
+★ 2. 分组聚合的核心不是记 API，是认清“结果表长什么样”：行索引变成组名、粒度从人压成组。认准这两点，size/count 的区别、by 要不要写、报错为什么来，全都顺了
+★ 3. 一天的卡点全在同一个主题上：“你以为在改原表，其实在造新表”。TypeError、KeyError、赋值无效，三种表面现象一个根
+4. 边界用例第一次主动设计：删掉一整档看 groupby 会不会翻车——这是从“跑通就行”往“测极端情况”走的第二步（第一步是前天的输入边界）
+5. 抽查题隔夜答辩通过：84 vs 73 从昨天答不上到今天两句讲清，说明“列也有标签和位置”是真理解了，不是记住答案
