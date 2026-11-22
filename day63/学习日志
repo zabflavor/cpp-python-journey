@@ -1,0 +1,46 @@
+学习日志 · 2026-11-22（周日）
+W9 第 7 天 · matplotlib 入门 · W9 收官 · 主产出：chart.py + chart.png
+一、今天写了什么
+· ~/Desktop/python/pandas/chart.py：matplotlib 入门，一张画布 2×2 布局画三张子图——柱状图（10 人总分）、三条折线（语文/数学/英语，带颜色、marker、图例）、散点图（语文 vs 数学）
+· 中文字体配置：from matplotlib import rcParams；rcParams['font.family']='STHeiti'——提前设好，中文零方框
+· chart.png 落盘：640×480、39KB，打开核对三张图全对
+· 环境：matplotlib 3.11.2 装到 python3.15（装的过程一波三折）
+· 跟课四集：054 折线图（主线）、055 条形图、057 散点图、059 多图表
+二、今天的知识点
+数据线最后一环闭合：pandas 管"算出来"，matplotlib 管"看出来"——numpy（算数）→ pandas（组织、查）→ matplotlib（画图）
+import matplotlib.pyplot as plt 里的点不能省：pyplot 是 matplotlib 的子模块，plot/bar/scatter/title/savefig 全住在那一格里；别名（plt / plot / p）随便改，路径不能改
+matplotlib 是大包（工具箱），pyplot 是专门画图的那一格；只 import matplotlib 导不进画图函数
+matplotlib 默认不认中文，标题和姓名会画成方框——两行 rcParams 配置换字体解决
+plt.subplot(2,2,n)：一张画布分 2 行 2 列，n 是第几格（从 1 数）
+三种图的调用：bar(类别, 值) 柱状、plot(x, y, ...) 折线、scatter(x, y) 散点
+plot 调三次 = 三条线，每条给 label，最后 plt.legend() 出图例区分
+plt.xticks(rotation=0, fontsize=7) 作用于"当前子图"——写了两次，分别管 f1 和 f2
+plt.tight_layout() 自动调整子图间距，防止标签挤在一起
+plt.savefig("chart.png") 必须放在 plt.show() 之前——show 之后画布被清掉，存出来是空白图
+画图数据仍从 pandas 来：read_csv → 造总分列 → 取列喂给画图函数
+三、今天的正课 / 卡点全过程
+· 先问"新建 Python 文件还是 Jupyter Notebook"——选 Python 文件，延续前六天 .py 脚本的工作流
+· import 写法卡了一下："直接写 matplotlib as plot、不加那个点行不行"——讲清 pyplot 是子模块、画图函数都在里面，别名可改路径不可改，照标准写法继续
+· 跟课四集看完，跳过可视化介绍、饼图、箱线图、seaborn——对着原表做减法
+· 自写关一次跑通，零报错、零中文警告——rcParams 提前设好，昨天预告的"中文坑"这次没撞上
+· 首版 Review 发现目录里没有 png：图画了、显示了，但没落盘
+· 补上 savefig 放 show 之前，重跑落盘，打开图逐张核对——中文正常、三图齐全
+四、今天踩的坑 & 解决办法
+画了图但没存盘
+现象：脚本跑通、图也弹出来了，但 pandas 目录里没有 chart.png
+根因：只写了 plt.show()，没有 savefig——显示和保存是两件事
+解决：show() 之前加 plt.savefig("chart.png")；顺序反过来会存出空白图
+import 路径的点被误当成可省的装饰
+现象：想写 import matplotlib as plot，觉得那个点多余
+根因：没认清 pyplot 是子模块，plot() 等函数不在 matplotlib 顶层
+解决：路径 matplotlib.pyplot 照写，只把尾部的别名换成想叫的名字
+环境坑：matplotlib 没装 + pip 收尾被拦
+现象：装了 9 分钟，下载完成却在 install 阶段失败
+根因：不是网络问题，是沙箱拦了 pip 清理 pycache 的"写+删"两步操作
+解决：从缓存重装，几秒完成——以后遇到"下载完却装失败"，先怀疑环境拦了写操作
+五、今天的收获
+★ 1. 数据线今天闭环：从 numpy 到 pandas 再到 matplotlib，一条完整的数据分析链路成型——复现论文时处理数据集、画图看结果，这三样就是全套工具
+★ 2. 一次跑通不是没坑，是提前避坑：昨天预告的中文方框坑，今天用 rcParams 提前化解——"见过坑"直接迁移成"避开坑"，这是经验在起作用
+★ 3. W9 收官：一周从 C++ STL 切到 pandas 七连，今天把数字变成图，交错线完整落地
+4. 看图核对的习惯：输出对了还要打开文件看一眼中文、颜色、标签——图表类任务"跑通"和"能看"是两回事
+5. 减法继续生效：视频只挑四集，饼图箱线 seaborn 全跳——视频列表长度不等于任务量
