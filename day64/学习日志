@@ -1,0 +1,47 @@
+学习日志 · 2026-11-23（周一）
+W10 第 1 天 · C++ 文件读写 ifstream/ofstream · 主产出：file.cpp（file_count 自写关）
+一、今天写了什么
+· ~/Desktop/cpp/day64/ofstream.cpp：P143 跟课，文本文件写文件（ofs.open → ofs<< → ofs.close）
+· ~/Desktop/cpp/day64/ifstream.cpp：P144 跟课，文本文件读文件（ifs.is_open 判断 + 四种读法：>> / getline 数组 / getline string / get 逐字符）
+· ~/Desktop/cpp/day64/file.cpp：自写关，读 data.txt → map 计数 → 写 result.txt 三步流水线，读出来 6 人 12 条计数全对
+· 数据文件两份：data.txt（Tom/Jerry/Alice 那组）、data2.txt（Zhang/Chen 那组，Chen 出现 4 次），故意带重复项验证累加
+· 抽查题闭环：pandas read_csv 一行 vs C++ 为什么这么多行，落进 file.cpp 末尾注释
+二、今天的知识点
+头文件 ，两个类：ofstream（写）、ifstream（读）；fstream 是两用类型，读写靠 open 的第二个参数决定
+打开文件：ofs.open("文件名", ios::out) 写、ifs.open("文件名", ios::in) 读；is_open() 判断是否成功，失败要给提示不能默默跑空
+读文件四种姿势：while(ifs>>buf) 按空白读、getline(buf, sizeof) 读数组、getline(ifs, string) 读整行、ifs.get() 逐字符
+ios::out 的语义是"数据写到文件里"——以写模式打开已存在的文件会清空原内容（今天亲身验证了）
+ios::app 是追加模式，接着写不覆盖（跟课提到，今天没用）
+文件读写 + map 计数：map<string,int> m; m[s]+=1; ——day57 的键盘版搬到文件版，核心计数句一个字不变
+map 自动有序：写入顺序是 Zhang 开头，遍历输出却是 Alice→Tom 字母序——红黑树插入时自动排序，去重+排序一次完成
+抽象层次差：pandas 的 read_csv 一行包办打开/解析/判类型/内存增长；C++ 每行对应一个亲自控制的细节
+边界用例：文件不存在时 is_open() 要拦住并提示；空文件、重复项是另外两种必测情况
+Mac 路径：绝对路径最稳；相对路径取决于运行目录——和 Python 那天的相对路径坑同族
+三、今天的正课 / 卡点全过程
+· 先问"学这个有啥用"——把文件读写接到 Person ReID 终点：读数据集标注文件、写评估结果、存 checkpoint，今天 file_count 就是"读标注→统计每个身份几张图→写报告"的最小模型
+· 视频列表找不到 ifstream/ofstream——换关键词"文件操作/文本文件/读文件"没搜到，截图发我后定位到 P143 写文件、P144 读文件；跳过二进制读写和职工管理系统大项目
+· 跟课两份敲通；自写关让我建数据文件，先建 data.txt（12 行英文名带重复），后又建 data2.txt（另一组分布，Chen 4 次）
+· 第一次卡：自己写读取代码时用 fstream + ios::out，结果读出来是空的、data2.txt 还被清空成 0 字节——一个参数错两个后果。引导后发现 out 是写模式、对照跟课文件应该用 in
+· map 计数：打开 day57 自己写的 map_numbercount.cpp，只改三处（int→string 的键、cin→文件循环、迭代器类型跟着改），核心 m[s]+=1 原样搬
+· 第一次跑通输出 Chen 4 / Li 2 / Liu 1 / Wang 1 / Zhang 3 / Zhao 1——和 data2.txt 逐条核对一致
+· 边界用例：文件名改成不存在的，"文件打开失败"正常打出，is_open() 判断生效
+· 补写文件那步：改回 data.txt，ofstream 打开 result.txt，六条统计写进去；再补抽查回答和 close()
+四、今天踩的坑 & 解决办法
+ios::out 当读模式用（今天的头号坑，会丢数据）
+现象：读出来是空的，而且 data2.txt 内容全没了（0 字节）
+根因：ios::out 是"数据写到文件"，以写模式打开已存在文件会先清空原内容；清空后 getline 从空文件读，自然没有
+解决：读文件用 ios::in，或干脆用 ifstream 从类型上锁死"只能读"，不给模式参数留犯错机会
+教训：这是会丢数据的错，比一般报错严重；以后看到 ios::out 就要想到"清空"
+fstream 两用类型的代价
+现象：类型不区分读写，全靠 open 第二个参数，容易写反
+解决：读用 ifstream、写用 ofstream，从类型上防呆；用 fstream 就必须盯紧参数
+权衡：少记一个类名，多担一个参数——今天选 ifstream/ofstream 更稳
+map 类型不一致（潜在坑，提前避开）
+现象：改键类型 int→string 时，迭代器声明 map<int,int>::iterator 容易忘记跟着改
+解决：类型改一处就要全局搜一遍跟着改，编译器会报类型不匹配
+五、今天的收获
+★ 1. 会丢数据的错比会报错的错更值得记：ios::out 清空文件这次是亲眼看着 data2.txt 变 0 字节——以后这个文件操作一定先看模式参数
+★ 2. 抽象层次的体感：pandas 一行 read_csv 和 C++ 十几行的对比，今天不是听来的，是自己一行行写出来的——"who 包办了什么"这个问题，写完自然有答案
+★ 3. day57 的代码今天直接复用：map 计数核心句 m[s]+=1 一个字没改——这证明真正学会的东西是能跨场景搬的
+4. map 自动有序是白捡的：没刻意排序，输出天然字母序——iset/map 的内部结构第一次在实战里显形
+5. 数据文件自己造：故意放重复、造两份不同分布，程序换数据还能跑对——这就是边界测试的雏形
