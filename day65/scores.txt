@@ -1,0 +1,6 @@
+Math 92 3.0
+English 86 2.0
+CPP 85 4.0
+Python 90 3.0
+DataStructure 78 4.0
+PE 59 0

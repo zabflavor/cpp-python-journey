@@ -1,0 +1,7 @@
+Math 12
+English 7.4
+CPP 14.8
+Python 12
+DataStructure 12
+PE 0
+GPA= 3.6375
