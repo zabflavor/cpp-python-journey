@@ -1,0 +1,7 @@
+Math: 4.0
+English: 3.7
+CPP: 3.7
+Python: 4.0
+DataStructure: 3.0
+PE: 0.0
+GPA = 3.6375
