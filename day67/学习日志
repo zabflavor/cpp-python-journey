@@ -1,0 +1,35 @@
+学习日志 · 2026-11-26（周四）
+W10 第 4 天 · gpa-tool Day3：numpy 广播版 GPA · 主产出：gpa_numpy.py
+一、今天写了什么
+· gpa_numpy.py 自写关完成：np.loadtxt 读 scores.txt → 拆三列 names/scores/credits → 掩膜赋值换绩点 → 整块加权求和 → 写 numpy_result.txt
+· 跑出 GPA=3.6375，和 C++ 版 result.txt、Python 版 gpa_result.txt 对上（PE 学分 0 的边界版）
+· 抽查注释落进 gpa_numpy.py 末尾：for 一行行算 vs 广播整块算，本质区别写清（11/25 埋的钩子清空）
+· 明细六行 + GPA 写进 numpy_result.txt，f-string 对齐，列整齐
+二、今天的知识点
+np.loadtxt("scores.txt", dtype=str) 读进来全是字符串，scores/credits 要 .astype(float) 转数字——和昨天 split 后写 float() 同一件事
+points = np.zeros_like(scores) 铺一张同形状全 0 数组，再按档往上填
+掩膜赋值 points[scores >= 90] = 4.0 整列一次改，不是 for 里逐行判断
+& 两边条件各自加括号，每个档都写成 (scores >= a) & (scores < b)
+gpa = (points * credits).sum() / credits.sum() 一行顶昨天 for 里的累加循环
+广播 vs for：谁来循环、一次处理多少——for 是外层 Python 循环一次一个，广播是底层 C 循环一次一整块；数学没变，只是计算组织方式变了
+f-string 对齐 f"{name:<12} {score:>4.0f}" 用来制表
+三、今天的正课 / 卡点全过程
+· 模式 C 项目实战，无视频跟课；按任务单五步走：读数组 / 掩膜换算 / 整块加权 / 制表 / 写文件
+· 读数组一次写对：dtype=str + astype(float)，对照昨天 Python 的 split + float
+· 掩膜换算第一版踩坑：最后一档写成 points[scores >= 60] = 1.0，把 90/86/85/90/78 全盖成 1.0，GPA 变 1.0
+· 修法：补上限 <64，points 回到 [4.0, 3.7, 3.7, 4.0, 3.0, 0]，GPA 回到 3.6375；和 numpy 那天的 & 优先级同族
+· 整块加权一行出结果，亲眼看到 (points * credits).sum() 顶掉昨天一个 for 循环
+· 制表和写文件沿用昨天骨架，六行明细落 numpy_result.txt
+· 抽查题答案给出并落进文件末尾注释
+四、今天踩的坑 & 解决办法
+掩膜覆盖坑（真坑）
+现象：GPA 变 1.0；根因：>=60 也包含高分，后写的档把前面全覆盖；解决：每档都写上下限 (scores >= 60) & (scores < 64)
+& 括号（预防）
+现象风险：不括号会先算 >= 再算 &，条件串味；解决：每个条件各自加括号，今天写的时候统一处理
+dtype 转换（易忘）
+现象风险：dtype=str 读进来 "92" 是字符串，直接乘会出错；解决：scores/credits 用 .astype(float) 转数字，names 保持字符串
+五、今天的收获
+★ 1. 从"一条一条切"换成"一批一批算"：广播不是新数学，是换了个组织方式
+★ 2. 同一份 GPA 三版对上（C++ / Python / numpy），跨语言互验闭环又扩了一版
+★ 3. 掩膜覆盖坑自己修出来了：条件要成对写，这比背语法有用
+4. 抽查注释把"谁来循环"写清楚，11/25 的钩子清空
